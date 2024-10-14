@@ -24,10 +24,11 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 	fontSize?: FontSize;
 }
 
+// Record<KEY, VALUE> type setter typen til tailwindFontSizes til type FontSize, som har en value som er string.
 const tailwindFontSizes: Record<FontSize, string> = {
 	xs: "text-xs", // 0.75rem (12px)
 	sm: "text-sm", // 0.875rem (14px)
-	md: "text-base", // 1rem (16px)
+	md: "text-md", // 1rem (16px)
 	lg: "text-lg", // 1.125rem (18px)
 	xl: "text-xl", // 1.25rem (20px)
 	"2xl": "text-2xl", // 1.5rem (24px)
