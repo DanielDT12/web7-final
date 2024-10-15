@@ -1,10 +1,11 @@
 import DataFetching from "./components/getDataList";
+import { Header } from "./components/Header";
 
 export default function Home() {
 	return (
-		<div className="font-[family-name:var(--font-geist-sans)]">
-			<h1>WEB 7 FINAL</h1>
+		<main className="flex flex-col px-4 font-[family-name:var(--font-geist-sans)]">
+			<Header />
 			<DataFetching />
-		</div>
+		</main>
 	);
 }
