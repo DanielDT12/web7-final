@@ -2,15 +2,24 @@
 
 import { useEffect, useState, useRef } from "react";
 
-const BASE_URL = "https://data.brreg.no/enhetsregisteret/api/enheter";
+import { kommuneNavnOgNummer } from "../data/kommuner";
 
-export default function DataFetching() {
+const BASE_URL = "https://data.brreg.no/enhetsregisteret/api/enheter";
+const KOMMUNE = "kommunenummer=";
+const FRA_DATO = "fraStiftelsesdato=";
+const TIL_DATO = "tilStiftelsesdato=";
+
+export default function DataFetching({ form, setForm, pageNumber }: any) {
 	const [bedrifter, setBedrifter] = useState({});
 
 	const [isLoading, setIsloading] = useState(false);
 	const [error, setError] = useState(null);
 
 	const abortControllerRef = useRef<AbortController | null>(null);
+
+	const kommuneNavnNormalisert =
+		form.kommune.charAt(0).toUpperCase() + form.kommune.slice(1).toLowerCase();
+	const kommuneNummer = kommuneNavnOgNummer[kommuneNavnNormalisert] || "ukjent";
 
 	useEffect(() => {
 		const fetchBedrifter = async () => {
@@ -43,6 +52,9 @@ export default function DataFetching() {
 
 		fetchBedrifter();
 	}, []);
+
+	const FORMATED_URL = `${BASE_URL}?${KOMMUNE}${kommuneNummer}&${FRA_DATO}${form.year}-01-01&${TIL_DATO}${form.year}-12-31&page=0`;
+	console.log(FORMATED_URL);
 
 	if (isLoading) {
 		return <div>Loading...</div>;
