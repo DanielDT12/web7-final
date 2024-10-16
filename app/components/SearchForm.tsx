@@ -7,12 +7,7 @@ import { Button } from "../UI/Button";
 
 import { kommuneNavnOgNummer } from "@/app/data/kommuner";
 
-export const SearchForm = () => {
-	const [form, setForm] = useState({
-		kommune: "",
-		year: "",
-	});
-
+export const SearchForm = ({ form, setForm }: any) => {
 	const [inputValue, setInputValue] = useState({
 		kommune: "",
 		year: "",
@@ -24,7 +19,7 @@ export const SearchForm = () => {
 	const [kommuner, setKommuner] = useState([]);
 
 	useEffect(() => {
-		setForm((prevForm) => ({
+		setForm((prevForm: any) => ({
 			...prevForm,
 			kommune: debouncedKommune,
 			year: debouncedYear,
