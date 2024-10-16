@@ -2,15 +2,10 @@
 
 import { useEffect, useState, useRef } from "react";
 
-type Post = {
-	userId: number;
-	id: number;
-	title: string;
-	body: string;
-};
+const BASE_URL = "https://data.brreg.no/enhetsregisteret/api/enheter";
 
 export default function DataFetching() {
-	const [post, setPost] = useState<Post[]>([]);
+	const [bedrifter, setBedrifter] = useState({});
 
 	const [isLoading, setIsloading] = useState(false);
 	const [error, setError] = useState(null);
@@ -18,7 +13,7 @@ export default function DataFetching() {
 	const abortControllerRef = useRef<AbortController | null>(null);
 
 	useEffect(() => {
-		const fetchPost = async () => {
+		const fetchBedrifter = async () => {
 			abortControllerRef.current?.abort();
 			abortControllerRef.current = new AbortController();
 
@@ -26,7 +21,7 @@ export default function DataFetching() {
 			setError(null);
 
 			try {
-				const res = await fetch("https://jsonplaceholder.typicode.com/posts", {
+				const res = await fetch(BASE_URL, {
 					signal: abortControllerRef.current?.signal,
 				});
 
@@ -34,8 +29,8 @@ export default function DataFetching() {
 					throw new Error(`HTTP error, status: ${res.status}`);
 				}
 
-				const posts = (await res.json()) as Post[];
-				setPost(posts);
+				const data = await res.json();
+				setBedrifter(data);
 			} catch (e: any) {
 				if (e.name !== "AbortError") {
 					setError(e);
@@ -46,7 +41,7 @@ export default function DataFetching() {
 			}
 		};
 
-		fetchPost();
+		fetchBedrifter();
 	}, []);
 
 	if (isLoading) {
@@ -59,12 +54,7 @@ export default function DataFetching() {
 
 	return (
 		<div className="grid grid-cols-4 gap-8 px-8">
-			{post.map((post) => (
-				<div key={post.id} className="flex flex-col gap-8 bg-black">
-					<h2 className="text-2xl">{post.title}</h2>
-					<p>{post.body}</p>
-				</div>
-			))}
+			<p></p>
 		</div>
 	);
 }
