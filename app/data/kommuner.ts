@@ -1,7 +1,6 @@
 export type kommuner = {
 	[key: string]: string | number;
 };
-// gammel liste med gammle nummer, bruker en funksjon for og oppdatere nummere. Har en raw data liste i excel form som kjøres gjennom en funksjon.
 
 // OBS!! DETTE ER EN DESTRUKTIV MÅTE OG OPPDATERE OBJECTET.
 function updateNumbersCode(newList: string) {
@@ -13,8 +12,8 @@ function updateNumbersCode(newList: string) {
 	});
 }
 
+// gammel liste med gammle nummer, bruker en funksjon for og oppdatere nummere. Har en raw data liste i excel form som kjøres gjennom en funksjon.
 // kjører funksjonen nederst i filen.
-
 export const kommuneNavnOgNummer: kommuner = {
 	Oslo: "0301",
 	Eigersund: 1101,
