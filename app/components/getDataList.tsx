@@ -3,6 +3,8 @@
 import { useEffect, useState, useRef } from "react";
 
 import { kommuneNavnOgNummer } from "../data/kommuner";
+import { BedriftResponse } from "@/app/types/bedrifterType";
+import DataTable from "./DataTable";
 
 const BASE_URL = "https://data.brreg.no/enhetsregisteret/api/enheter";
 const KOMMUNE = "kommunenummer=";
@@ -10,7 +12,7 @@ const FRA_DATO = "fraStiftelsesdato=";
 const TIL_DATO = "tilStiftelsesdato=";
 
 export default function DataFetching({ form, setForm, pageNumber = 0 }: any) {
-	const [bedrifter, setBedrifter] = useState({});
+	const [bedrifter, setBedrifter] = useState<BedriftResponse | null>(null);
 
 	const [isLoading, setIsloading] = useState(false);
 	const [error, setError] = useState(null);
@@ -59,8 +61,6 @@ export default function DataFetching({ form, setForm, pageNumber = 0 }: any) {
 		fetchBedrifter();
 	}, [form]);
 
-	console.log(bedrifter);
-
 	if (isLoading) {
 		return <div>Loading...</div>;
 	}
@@ -69,13 +69,5 @@ export default function DataFetching({ form, setForm, pageNumber = 0 }: any) {
 		return <div>Something went wrong.</div>;
 	}
 
-	return (
-		<div className="grid grid-cols-4 gap-8 px-8">
-			{bedrifter && Object.keys(bedrifter).length > 0 ? (
-				<p>Data Fetching OK</p>
-			) : (
-				<p>No data</p>
-			)}
-		</div>
-	);
+	return <main>{bedrifter && <DataTable data={bedrifter} />}</main>;
 }
