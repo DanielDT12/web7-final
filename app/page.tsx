@@ -10,9 +10,9 @@ export default function Home() {
 		year: "",
 	});
 	return (
-		<main className="flex flex-col px-4 font-[family-name:var(--font-geist-sans)]">
+		<div className="flex flex-col px-4 font-[family-name:var(--font-geist-sans)]">
 			<Header form={form} setForm={setForm} />
 			<DataFetching form={form} setForm={setForm} />
-		</main>
+		</div>
 	);
 }
