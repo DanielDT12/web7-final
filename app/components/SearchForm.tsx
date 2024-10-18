@@ -14,17 +14,8 @@ export const SearchForm = ({ form, setForm }: any) => {
 	});
 
 	const debouncedKommune = useDebounce(inputValue.kommune, 200);
-	const debouncedYear = useDebounce(inputValue.year, 200);
 
 	const [kommuner, setKommuner] = useState([]);
-
-	useEffect(() => {
-		setForm((prevForm: any) => ({
-			...prevForm,
-			kommune: debouncedKommune,
-			year: debouncedYear,
-		}));
-	}, [debouncedKommune, debouncedYear]);
 
 	useEffect(() => {
 		const filterKommune: any = Object.entries(kommuneNavnOgNummer).filter(
@@ -44,8 +35,10 @@ export const SearchForm = ({ form, setForm }: any) => {
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
-		const queryString = `?kommune=${form.kommune}&year=${form.year}`;
-		console.log("Form submitted with query:", queryString);
+		setForm({
+			kommune: inputValue.kommune,
+			year: inputValue.year,
+		});
 	};
 
 	return (
@@ -70,17 +63,15 @@ export const SearchForm = ({ form, setForm }: any) => {
 				<Button type="submit" text="Submit" fontSize="xl">
 					Submit
 				</Button>
-				<div className="absolute top-16 left-0 flex flex-col gap-2 max-h-[40rem] w-72 overflow-y-scroll border border-solid border-white py-4">
-					{inputValue.kommune ? (
-						kommuner.map(([name, number]) => (
+				{inputValue.kommune && (
+					<div className="absolute top-16 left-0 flex flex-col gap-2 max-h-[40rem] w-72 overflow-y-scroll border border-solid border-white py-4">
+						{kommuner.sort().map(([name, number]) => (
 							<p className="p-4" key={number}>
 								{name}
 							</p>
-						))
-					) : (
-						<div className="border-0"></div>
-					)}
-				</div>
+						))}
+					</div>
+				)}
 			</form>
 		</>
 	);
