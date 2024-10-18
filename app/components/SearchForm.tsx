@@ -39,6 +39,11 @@ export const SearchForm = ({ form, setForm }: any) => {
 			kommune: inputValue.kommune,
 			year: inputValue.year,
 		});
+
+		setInputValue({
+			kommune: "",
+			year: "",
+		});
 	};
 
 	return (
