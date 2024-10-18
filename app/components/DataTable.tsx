@@ -18,7 +18,12 @@ export default function DataTable({ data }: DataTableProps) {
 			</thead>
 			<tbody>
 				{data._embedded?.enheter?.map((bedrift) => (
-					<tr key={bedrift.organisasjonsnummer}>
+					<tr
+						key={bedrift.organisasjonsnummer}
+						className={`${
+							bedrift.konkurs ? "bg-red-500 bg-opacity-30" : "bg-black"
+						}`}
+					>
 						<td className="p-2 border-t border border-white">{bedrift.navn}</td>
 						<td className="p-2 border-t border border-white">
 							{bedrift.organisasjonsnummer}
