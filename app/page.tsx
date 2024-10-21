@@ -6,11 +6,11 @@ import { BedriftDataApiProvider } from "./context/bedriftApiContext";
 
 export default function Home() {
 	return (
-		<div className="flex flex-col px-4 font-[family-name:var(--font-geist-sans)]">
-			<BedriftDataApiProvider>
+		<BedriftDataApiProvider>
+			<div className="flex flex-col px-4 font-[family-name:var(--font-geist-sans)]">
 				<Header />
 				<DataFetching />
-			</BedriftDataApiProvider>
-		</div>
+			</div>
+		</BedriftDataApiProvider>
 	);
 }
