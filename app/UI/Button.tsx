@@ -19,7 +19,6 @@ type FontSize =
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 	// interface for og legge til props til default HTML ATTRIBUTES
-	text: string;
 	className?: string;
 	fontSize?: FontSize;
 }
