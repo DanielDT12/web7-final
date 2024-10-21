@@ -1,21 +1,27 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import { BedriftDataApiContext } from "../context/bedriftApiContext";
 import { useDebounce } from "../hooks/useDebounce";
 
 import { Button } from "../UI/Button";
 
 import { kommuneNavnOgNummer } from "@/app/data/kommuner";
 
-export const SearchForm = ({ form, setForm }: any) => {
-	const [inputValue, setInputValue] = useState({
-		kommune: "",
-		year: "",
-	});
+export const SearchForm = () => {
+	const context = useContext(BedriftDataApiContext);
 
-	const debouncedKommune = useDebounce(inputValue.kommune, 200);
+	if (!context) {
+		throw new Error(
+			"BedriftDataApiContext must be used within a BedriftDataApiProvider"
+		);
+	}
+
+	const { setForm, inputValue, setInputValue } = context;
 
 	const [kommuner, setKommuner] = useState([]);
+
+	const debouncedKommune = useDebounce(inputValue.kommune, 200);
 
 	useEffect(() => {
 		const filterKommune: any = Object.entries(kommuneNavnOgNummer).filter(
@@ -65,13 +71,13 @@ export const SearchForm = ({ form, setForm }: any) => {
 					onChange={handleChange}
 					placeholder="år"
 				/>
-				<Button type="submit" text="Submit" fontSize="xl">
+				<Button type="submit" fontSize="xl">
 					Submit
 				</Button>
 				{inputValue.kommune && (
 					<div className="absolute top-16 left-0 flex flex-col gap-2 max-h-[40rem] w-72 overflow-y-scroll border border-solid border-white py-4 bg-black">
 						{kommuner.sort().map(([name, number]) => (
-							<p className="p-4" key={number}>
+							<p className="p-4" key={name + number}>
 								{name}
 							</p>
 						))}
