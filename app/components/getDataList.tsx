@@ -1,21 +1,36 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useContext } from "react";
+import { BedriftDataApiContext } from "../context/bedriftApiContext";
 
 import { kommuneNavnOgNummer } from "../data/kommuner";
 import { BedriftResponse } from "@/app/types/bedrifterType";
+
 import DataTable from "./DataTable";
+import { Button } from "../UI/Button";
 
 const BASE_URL = "https://data.brreg.no/enhetsregisteret/api/enheter";
 const KOMMUNE = "kommunenummer=";
 const FRA_DATO = "fraStiftelsesdato=";
 const TIL_DATO = "tilStiftelsesdato=";
+const SIZE = 10; // mengden bedrifter som rendrer i data tabelen
 
-export default function DataFetching({ form, setForm, pageNumber = 0 }: any) {
-	const [bedrifter, setBedrifter] = useState<BedriftResponse | null>(null);
+export default function DataFetching() {
+	const context = useContext(BedriftDataApiContext);
+
+	if (!context) {
+		throw new Error(
+			"BedriftDataApiContext must be used within a BedriftDataApiProvider"
+		);
+	}
+
+	const { form, bedrifter, setBedrifter, currentPage, setCurrentPage } =
+		context;
 
 	const [isLoading, setIsloading] = useState(false);
 	const [error, setError] = useState(null);
+
+	const totalPages: number = bedrifter?.page.totalPages as number; // as number gjør at jeg forteller typescript compileren at dette alltid er et nummer
 
 	const abortControllerRef = useRef<AbortController | null>(null); // abortcontroller referanse for og håndtere race conditions
 
@@ -29,11 +44,12 @@ export default function DataFetching({ form, setForm, pageNumber = 0 }: any) {
 		if (!form || !form.kommune || !form.year) return;
 
 		const fetchBedrifter = async () => {
-			const FORMATED_URL = `${BASE_URL}?${KOMMUNE}${kommuneNummer}&${FRA_DATO}${form.year}-01-01&${TIL_DATO}${form.year}-12-31&page=${pageNumber}`;
+			const FORMATED_URL = `${BASE_URL}?${KOMMUNE}${kommuneNummer}&${FRA_DATO}${form.year}-01-01&${TIL_DATO}${form.year}-12-31&page=${currentPage}&size=${SIZE}`;
 
 			abortControllerRef.current?.abort(); // sjekker om det er en activ abortcontroller, hvis det finnes så kjører den abort
 			abortControllerRef.current = new AbortController(); // lager ny abortcontroller
 
+			setCurrentPage(currentPage);
 			setIsloading(true);
 			setError(null);
 
@@ -59,7 +75,23 @@ export default function DataFetching({ form, setForm, pageNumber = 0 }: any) {
 		};
 
 		fetchBedrifter();
-	}, [form]);
+	}, [form, currentPage]);
+
+	const goToPreviousPage = () => {
+		if (currentPage === 0) {
+			return;
+		} else {
+			setCurrentPage(currentPage - 1);
+		}
+	};
+
+	const goToNextPage = () => {
+		if (currentPage === totalPages) {
+			return;
+		} else {
+			setCurrentPage(currentPage + 1);
+		}
+	};
 
 	if (isLoading) {
 		return <div>Loading...</div>;
@@ -69,5 +101,15 @@ export default function DataFetching({ form, setForm, pageNumber = 0 }: any) {
 		return <div>Something went wrong.</div>;
 	}
 
-	return <main>{bedrifter && <DataTable data={bedrifter} />}</main>;
+	return (
+		<main>
+			{bedrifter && <DataTable data={bedrifter} />}
+			{bedrifter && (
+				<div className="flex justify-between w-[100%] py-8">
+					<Button onClick={goToPreviousPage}>&larr;</Button>
+					<Button onClick={goToNextPage}>&rarr;</Button>
+				</div>
+			)}
+		</main>
+	);
 }
