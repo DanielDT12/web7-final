@@ -6,12 +6,16 @@ interface DataTableProps {
 
 export default function DataTable({ data }: DataTableProps) {
 	return (
-		<table className="border border-solid border-red-600 w-[100%]">
+		<table className=" w-[100%] max-w-[65rem] m-auto border border-solid">
 			<thead>
 				<tr>
-					<th className="border-t border border-white p-2 text-left">Navn</th>
-					<th className="border-t border border-white p-2 text-left">Org.Nr</th>
-					<th className="border-t border border-white p-2 text-left">
+					<th className="border-t border border-white p-2 text-left bg-gray-900">
+						Navn
+					</th>
+					<th className="border-t border border-white p-2 text-left bg-gray-900">
+						Org.Nr
+					</th>
+					<th className="border-t border border-white p-2 text-left bg-gray-900">
 						Stiftelsesdato
 					</th>
 				</tr>
