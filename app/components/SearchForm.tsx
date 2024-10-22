@@ -8,25 +8,50 @@ import { Button } from "../UI/Button";
 
 import { kommuneNavnOgNummer } from "@/app/data/kommuner";
 
-export const SearchForm = () => {
-	const [kommuner, setKommuner] = useState([]);
-	const { setForm, inputValue, setInputValue } = useFormState();
+type KommuneArray = [string, number];
 
-	const debouncedKommune = useDebounce(inputValue.kommune, 200);
+export const SearchForm = () => {
+	const [kommuner, setKommuner] = useState<KommuneArray[]>([]); // array for ul liste, conditional rendering nederst i tsx.
+	const [isSelected, setIsSelected] = useState<boolean>(false); // flag for og vise og hjemme liste basert på om kommune matcher en kommune i kommune listen over,
+	const { setForm, inputValue, setInputValue } = useFormState(); // useContext cusetom hook
+
+	const debouncedKommune = useDebounce(inputValue.kommune, 200); // lagger oppdatering av input field kommune liste.
 
 	useEffect(() => {
-		const filterKommune: any = Object.entries(kommuneNavnOgNummer).filter(
-			([name]) => name.toLowerCase().includes(debouncedKommune.toLowerCase())
-		);
+		// useEffect for filtrering av liste, Object.entries lagger ett array av kommuneNavnOgNummer objectet.
+		if (!isSelected && debouncedKommune) {
+			const filterKommune: any = Object.entries(kommuneNavnOgNummer).filter(
+				([name]) => name.toLowerCase().includes(debouncedKommune.toLowerCase())
+			);
+			setKommuner(filterKommune);
+		} else {
+			setKommuner([]);
+		}
+	}, [isSelected, debouncedKommune]);
 
-		setKommuner(filterKommune);
-	}, [debouncedKommune]);
-
-	const handleChange = (e: any) => {
+	const handleKommuneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setIsSelected(false);
 		setInputValue({
 			...inputValue,
 			[e.target.name]: e.target.value,
 		});
+	};
+
+	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setInputValue({
+			...inputValue,
+			[e.target.name]: e.target.value,
+		});
+	};
+
+	const handleSelectedKommune = (name: string) => {
+		setInputValue({
+			...inputValue,
+			kommune: name,
+		});
+
+		setIsSelected(true); // flagg for å sjekke om man har klikket en kommune
+		setKommuner([]); // fjerner alle elementer i arrayet, bruker en sjekk i tsx som spør om det er innhold i denne listen, hvis ikke rendrer den ikke ut en ul.
 	};
 
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -41,34 +66,45 @@ export const SearchForm = () => {
 			kommune: "",
 			year: "",
 		});
+
+		setKommuner([]); // redundancy når man submitter form, gjør det samme som den over.
 	};
 
 	return (
 		<>
-			<form className="flex gap-4 relative" onSubmit={handleSubmit}>
+			<form
+				className="flex flex-col gap-4 relative sm:flex-row"
+				onSubmit={handleSubmit}
+			>
 				<input
-					className="p-2 rounded-md text-black"
+					className="p-2 rounded-md text-black w-[100%]"
 					type="text"
 					name="kommune"
 					value={inputValue.kommune}
-					onChange={handleChange}
+					onChange={handleKommuneChange}
 					placeholder="Søk etter kommune"
 				/>
 				<input
-					className="p-2 rounded-md text-black"
+					className="p-2 rounded-md text-black w-[100%]"
 					type="text"
 					name="year"
 					value={inputValue.year}
-					onChange={handleChange}
+					onChange={handleInputChange}
 					placeholder="år"
 				/>
 				<Button type="submit" fontSize="xl">
 					Submit
 				</Button>
-				{inputValue.kommune && (
-					<ul className="absolute top-16 left-0 flex flex-col gap-2 max-h-[40rem] w-72 overflow-y-scroll border border-solid border-white py-4 bg-black ">
+				{inputValue.kommune && kommuner.length > 0 && (
+					<ul className="absolute top-44 left-0 flex flex-col max-h-[40rem] w-[100%] max-w-[14rem] my-4 border border-solid border-white bg-black overflow-y-scroll sm:top-12">
 						{kommuner.sort().map(([name, number]) => (
-							<li className="p-4 cursor-pointer" key={name + number}>
+							<li
+								className={`p-2 cursor-pointer ${
+									kommuner.length > 1 ? "border-t border-b" : ""
+								} border-white`}
+								key={name + number}
+								onClick={() => handleSelectedKommune(name)}
+							>
 								{name}
 							</li>
 						))}
