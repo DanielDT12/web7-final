@@ -66,13 +66,13 @@ export const SearchForm = () => {
 					Submit
 				</Button>
 				{inputValue.kommune && (
-					<div className="absolute top-16 left-0 flex flex-col gap-2 max-h-[40rem] w-72 overflow-y-scroll border border-solid border-white py-4 bg-black">
+					<ul className="absolute top-16 left-0 flex flex-col gap-2 max-h-[40rem] w-72 overflow-y-scroll border border-solid border-white py-4 bg-black ">
 						{kommuner.sort().map(([name, number]) => (
-							<p className="p-4" key={name + number}>
+							<li className="p-4 cursor-pointer" key={name + number}>
 								{name}
-							</p>
+							</li>
 						))}
-					</div>
+					</ul>
 				)}
 			</form>
 		</>
