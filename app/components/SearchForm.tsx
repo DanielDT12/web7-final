@@ -1,25 +1,16 @@
 "use client";
 
-import { useEffect, useState, useContext } from "react";
-import { BedriftDataApiContext } from "../context/bedriftApiContext";
+import { useEffect, useState } from "react";
 import { useDebounce } from "../hooks/useDebounce";
+import { useFormState } from "../hooks/useFormState";
 
 import { Button } from "../UI/Button";
 
 import { kommuneNavnOgNummer } from "@/app/data/kommuner";
 
 export const SearchForm = () => {
-	const context = useContext(BedriftDataApiContext);
-
-	if (!context) {
-		throw new Error(
-			"BedriftDataApiContext must be used within a BedriftDataApiProvider"
-		);
-	}
-
-	const { setForm, inputValue, setInputValue } = context;
-
 	const [kommuner, setKommuner] = useState([]);
+	const { setForm, inputValue, setInputValue } = useFormState();
 
 	const debouncedKommune = useDebounce(inputValue.kommune, 200);
 

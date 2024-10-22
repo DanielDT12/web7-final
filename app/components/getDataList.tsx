@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useState, useRef, useContext } from "react";
-import { BedriftDataApiContext } from "../context/bedriftApiContext";
+import { useEffect, useState, useRef } from "react";
+import { useFormState } from "../hooks/useFormState";
+import { useBedriftApiState } from "../hooks/useBedriftApiState";
 
 import { kommuneNavnOgNummer } from "../data/kommuner";
-import { BedriftResponse } from "@/app/types/bedrifterType";
 
 import DataTable from "./DataTable";
 import { Button } from "../UI/Button";
@@ -16,16 +16,9 @@ const TIL_DATO = "tilStiftelsesdato=";
 const SIZE = 10; // mengden bedrifter som rendrer i data tabelen
 
 export default function DataFetching() {
-	const context = useContext(BedriftDataApiContext);
-
-	if (!context) {
-		throw new Error(
-			"BedriftDataApiContext must be used within a BedriftDataApiProvider"
-		);
-	}
-
-	const { form, bedrifter, setBedrifter, currentPage, setCurrentPage } =
-		context;
+	const { form } = useFormState();
+	const { bedrifter, setBedrifter, currentPage, setCurrentPage } =
+		useBedriftApiState();
 
 	const [isLoading, setIsloading] = useState(false);
 	const [error, setError] = useState(null);
