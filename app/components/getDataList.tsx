@@ -34,7 +34,7 @@ export default function DataFetching() {
 	const kommuneNummer = kommuneNavnOgNummer[kommuneNavnNormalisert] || "ukjent"; // setter string til kommune nr for.eks bergen til 4601
 
 	useEffect(() => {
-		if (!form || !form.kommune || !form.year) return;
+		if (!form || !form.kommune || !form.year) return; // hindrer useEffect for og kjøre vist den mangler form veridene
 
 		const fetchBedrifter = async () => {
 			const FORMATED_URL = `${BASE_URL}?${KOMMUNE}${kommuneNummer}&${FRA_DATO}${form.year}-01-01&${TIL_DATO}${form.year}-12-31&page=${currentPage}&size=${SIZE}`;
