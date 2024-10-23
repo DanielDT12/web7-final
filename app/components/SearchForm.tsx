@@ -4,9 +4,11 @@ import { useEffect, useState } from "react";
 import { useDebounce } from "../hooks/useDebounce";
 import { useFormState } from "../hooks/useFormState";
 
-import { Button } from "../UI/Button";
-
 import { kommuneNavnOgNummer } from "@/app/data/kommuner";
+
+import capitalizeName from "@/app/utilities/capitalizeKommuneName";
+
+import { Button } from "../UI/Button";
 
 type KommuneArray = [string, number];
 
@@ -105,7 +107,7 @@ export const SearchForm = () => {
 								key={name + number}
 								onClick={() => handleSelectedKommune(name)}
 							>
-								{name}
+								{capitalizeName(name)}
 							</li>
 						))}
 					</ul>
