@@ -2,11 +2,13 @@
 
 import { useEffect, useState, useRef } from "react";
 import { useFormState } from "../hooks/useFormState";
+import { usePagination } from "../hooks/usePagination";
 import { useBedriftApiState } from "../hooks/useBedriftApiState";
 
 import normalizeStringInput from "@/app/utilities/normalizeStringInput"; // string normalize function
 
 import DataTable from "./DataTable";
+import { PaginationContainer } from "./PaginationContainer";
 import { Button } from "../UI/Button";
 
 import { kommuneNavnOgNummer } from "../data/kommuner";
@@ -17,14 +19,17 @@ const SIZE = 10; // Antall bedrifter som vises i data tabelen
 
 export default function DataFetching() {
 	const { form } = useFormState();
-	const { bedrifter, setBedrifter, currentPage, setCurrentPage } =
-		useBedriftApiState();
+	const { bedrifter, setBedrifter } = useBedriftApiState();
 
+	const [totalPages, setTotalPages] = useState<number>(0);
 	const [isLoading, setIsloading] = useState<boolean>(false);
 	const [error, setError] = useState<Error | null>(null);
 	const abortControllerRef = useRef<AbortController | null>(null); // Referanse til AbortController for å håndtere race conditions ved fetch-forespørselen
 
-	const totalPages: number = bedrifter?.page.totalPages as number; // Bruker 'as number' for å informere Typescript om at dette alltid vil være et nummer.
+	const { currentPage, goToNextPage, goToPreviousPage } = usePagination({
+		totalPages,
+		initialPage: 0,
+	});
 
 	const kommuneNavn = normalizeStringInput(form.kommune);
 	const kommuneNummer = kommuneNavnOgNummer[kommuneNavn] || "ukjent";
@@ -38,7 +43,6 @@ export default function DataFetching() {
 			abortControllerRef.current?.abort(); // Sjekker om det er en activ abortcontroller, hvis det finnes så kjører den abort
 			abortControllerRef.current = new AbortController(); // lager ny abortcontroller
 
-			setCurrentPage(currentPage);
 			setIsloading(true);
 			setError(null);
 
@@ -53,6 +57,7 @@ export default function DataFetching() {
 
 				const data: BedriftResponse = await res.json();
 				setBedrifter(data);
+				setTotalPages(data.page.totalPages);
 			} catch (err: unknown) {
 				if (err instanceof Error && err.name !== "AbortError") {
 					// sjekker etter error som ikke er AbortError
@@ -66,22 +71,6 @@ export default function DataFetching() {
 
 		fetchBedrifter();
 	}, [form, currentPage]);
-
-	const goToPreviousPage = () => {
-		if (currentPage === 0) {
-			return;
-		} else {
-			setCurrentPage(currentPage - 1);
-		}
-	};
-
-	const goToNextPage = () => {
-		if (currentPage === totalPages) {
-			return;
-		} else {
-			setCurrentPage(currentPage + 1);
-		}
-	};
 
 	if (isLoading) {
 		return <div>Loading...</div>;
@@ -99,10 +88,12 @@ export default function DataFetching() {
 			{bedrifter && (
 				<>
 					<DataTable data={bedrifter} />
-					<div className="flex justify-between max-w-[65rem] py-8">
-						<Button onClick={goToPreviousPage}>&larr;</Button>
-						<Button onClick={goToNextPage}>&rarr;</Button>
-					</div>
+					<PaginationContainer
+						currentPage={currentPage}
+						totalPages={totalPages}
+						goToNextPage={goToNextPage}
+						goToPreviousPage={goToPreviousPage}
+					/>
 				</>
 			)}
 		</section>
