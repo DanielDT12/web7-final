@@ -4,17 +4,15 @@ import { useEffect, useState, useRef } from "react";
 import { useFormState } from "../hooks/useFormState";
 import { useBedriftApiState } from "../hooks/useBedriftApiState";
 
-import { kommuneNavnOgNummer } from "../data/kommuner";
+import normalizeStringInput from "@/app/utilities/normalizeStringInput"; // string normalize function
 
 import DataTable from "./DataTable";
 import { Button } from "../UI/Button";
 
+import { kommuneNavnOgNummer } from "../data/kommuner";
 import { BedriftResponse } from "../types/bedrifterType";
 
 const BASE_URL = "https://data.brreg.no/enhetsregisteret/api/enheter";
-const KOMMUNE = "kommunenummer=";
-const FRA_DATO = "fraStiftelsesdato=";
-const TIL_DATO = "tilStiftelsesdato=";
 const SIZE = 10; // Antall bedrifter som vises i data tabelen
 
 export default function DataFetching() {
@@ -24,22 +22,18 @@ export default function DataFetching() {
 
 	const [isLoading, setIsloading] = useState<boolean>(false);
 	const [error, setError] = useState<Error | null>(null);
+	const abortControllerRef = useRef<AbortController | null>(null); // Referanse til AbortController for å håndtere race conditions ved fetch-forespørselen
 
 	const totalPages: number = bedrifter?.page.totalPages as number; // Bruker 'as number' for å informere Typescript om at dette alltid vil være et nummer.
 
-	const abortControllerRef = useRef<AbortController | null>(null); // Referanse til AbortController for å håndtere race conditions ved fetch-forespørselen
-
-	const kommuneNavnNormalisert =
-		form?.kommune.charAt(0).toUpperCase() +
-		form?.kommune.slice(1).toLowerCase(); // Normalisering av string input fra form
-
-	const kommuneNummer = kommuneNavnOgNummer[kommuneNavnNormalisert] || "ukjent"; // Setter string til kommune nr for.eks bergen til 4601
+	const kommuneNavn = normalizeStringInput(form.kommune);
+	const kommuneNummer = kommuneNavnOgNummer[kommuneNavn] || "ukjent";
 
 	useEffect(() => {
 		if (!form || !form.kommune || !form.year) return; // Forhindrer useEffect i å kjøre hvis nødvendige verdier fra form mangler
 
 		const fetchBedrifter = async () => {
-			const FORMATED_URL = `${BASE_URL}?${KOMMUNE}${kommuneNummer}&${FRA_DATO}${form.year}-01-01&${TIL_DATO}${form.year}-12-31&page=${currentPage}&size=${SIZE}`;
+			const FORMATED_URL = `${BASE_URL}?kommunenummer=${kommuneNummer}&fraStiftelsesdato=${form.year}-01-01&tilStiftelsesdato=${form.year}-12-31&page=${currentPage}&size=${SIZE}`;
 
 			abortControllerRef.current?.abort(); // Sjekker om det er en activ abortcontroller, hvis det finnes så kjører den abort
 			abortControllerRef.current = new AbortController(); // lager ny abortcontroller
