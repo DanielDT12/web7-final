@@ -1,735 +1,307 @@
-export type kommuner = {
-	[key: string]: string | number;
+export type Kommuner = {
+	[key: string]: string;
 };
 
-// OBS!! DETTE ER EN DESTRUKTIV MÅTE OG OPPDATERE OBJECTET.
-function updateNumbersCode(newList: string) {
-	const lines = newList.trim().split("\n");
-
-	lines.forEach((line) => {
-		const [number, name] = line.trim().split("\t");
-		kommuneNavnOgNummer[name] = Number(number);
-	});
-}
-
-// gammel liste med gammle nummer, bruker en funksjon for og oppdatere nummere. Har en raw data liste i excel form som kjøres gjennom en funksjon.
-// kjører funksjonen nederst i filen.
-export const kommuneNavnOgNummer: kommuner = {
-	Oslo: "0301",
-	Eigersund: 1101,
-	Stavanger: 1103,
-	Haugesund: 1106,
-	Sandnes: 1108,
-	Sokndal: 1111,
-	Lund: 1112,
-	Bjerkreim: 1114,
-	Hå: 1119,
-	Klepp: 1120,
-	Time: 1121,
-	Gjesdal: 1122,
-	Sola: 1124,
-	Randaberg: 1127,
-	Strand: 1130,
-	Hjelmeland: 1133,
-	Suldal: 1134,
-	Sauda: 1135,
-	Kvitsøy: 1144,
-	Bokn: 1145,
-	Tysvær: 1146,
-	Karmøy: 1149,
-	Utsira: 1151,
-	Vindafjord: 1160,
-	Kristiansund: 1505,
-	Molde: 1506,
-	Ålesund: 1507,
-	Vanylven: 1511,
-	Sande: 1514,
-	"Herøy (M. og R.)": 1515,
-	Ulstein: 1516,
-	Hareid: 1517,
-	Ørsta: 1520,
-	Stranda: 1525,
-	Sykkylven: 1528,
-	Sula: 1531,
-	Giske: 1532,
-	Vestnes: 1535,
-	Rauma: 1539,
-	Aukra: 1547,
-	Averøy: 1554,
-	Gjemnes: 1557,
-	Tingvoll: 1560,
-	Sunndal: 1563,
-	Surnadal: 1566,
-	Smøla: 1573,
-	Aure: 1576,
-	Volda: 1577,
-	Fjord: 1578,
-	Hustadvika: 1579,
-	Bodø: 1804,
-	Narvik: 1806,
-	Bindal: 1811,
-	Sømna: 1812,
-	Brønnøy: 1813,
-	Vega: 1815,
-	Vevelstad: 1816,
-	"Herøy (Nordl.)": 1818,
-	Alstahaug: 1820,
-	Leirfjord: 1822,
-	Vefsn: 1824,
-	Grane: 1825,
-	Hattfjelldal: 1826,
-	Dønna: 1827,
-	Nesna: 1828,
-	Hemnes: 1832,
-	Rana: 1833,
-	Lurøy: 1834,
-	Træna: 1835,
-	Rødøy: 1836,
-	Meløy: 1837,
-	Gildeskål: 1838,
-	Beiarn: 1839,
-	Saltdal: 1840,
-	"Fauske-Fuossko": 1841,
-	Sørfold: 1845,
-	Steigen: 1848,
-	Lødingen: 1851,
-	Evenes: 1853,
-	Røst: 1856,
-	Værøy: 1857,
-	Flakstad: 1859,
-	Vestvågøy: 1860,
-	Vågan: 1865,
-	Hadsel: 1866,
-	Bø: 1867,
-	Øksnes: 1868,
-	Sortland: 1870,
-	Andøy: 1871,
-	Moskenes: 1874,
-	Hamarøy: 1875,
-	Halden: 3001,
-	Moss: 3002,
-	Sarpsborg: 3003,
-	Fredrikstad: 3004,
-	Drammen: 3005,
-	Kongsberg: 3006,
-	Ringerike: 3007,
-	Hvaler: 3011,
-	Aremark: 3012,
-	Marker: 3013,
-	"Indre Østfold": 3014,
-	Skiptvet: 3015,
-	Rakkestad: 3016,
-	Råde: 3017,
-	"Våler (Østf.)": 3018,
-	Vestby: 3019,
-	"Nordre Follo": 3020,
-	Ås: 3021,
-	Frogn: 3022,
-	Nesodden: 3023,
-	Bærum: 3024,
-	Asker: 3025,
-	"Aurskog-Høland": 3026,
-	Rælingen: 3027,
-	Enebakk: 3028,
-	Lørenskog: 3029,
-	Lillestrøm: 3030,
-	Nittedal: 3031,
-	Gjerdrum: 3032,
-	Ullensaker: 3033,
-	Nes: 3034,
-	Eidsvoll: 3035,
-	Nannestad: 3036,
-	Hurdal: 3037,
-	Hole: 3038,
-	Flå: 3039,
-	Nesbyen: 3040,
-	Gol: 3041,
-	Hemsedal: 3042,
-	Ål: 3043,
-	Hol: 3044,
-	Sigdal: 3045,
-	Krødsherad: 3046,
-	Modum: 3047,
-	"Øvre Eiker": 3048,
-	Lier: 3049,
-	Flesberg: 3050,
-	Rollag: 3051,
-	"Nore og Uvdal": 3052,
-	Jevnaker: 3053,
-	Lunner: 3054,
-	Kongsvinger: 3401,
-	Hamar: 3403,
-	Lillehammer: 3405,
-	Gjøvik: 3407,
-	Ringsaker: 3411,
-	Løten: 3412,
-	Stange: 3413,
-	"Nord-Odal": 3414,
-	"Sør-Odal": 3415,
-	Eidskog: 3416,
-	Grue: 3417,
-	Åsnes: 3418,
-	"Våler (Hedm.)": 3419,
-	Elverum: 3420,
-	Trysil: 3421,
-	Åmot: 3422,
-	"Stor-Elvdal": 3423,
-	Rendalen: 3424,
-	Engerdal: 3425,
-	Tolga: 3426,
-	Tynset: 3427,
-	Alvdal: 3428,
-	Folldal: 3429,
-	Os: 3430,
-	Dovre: 3431,
-	Lesja: 3432,
-	Skjåk: 3433,
-	Lom: 3434,
-	Vågå: 3435,
-	"Nord-Fron": 3436,
-	Sel: 3437,
-	"Sør-Fron": 3438,
-	Ringebu: 3439,
-	Øyer: 3440,
-	Gausdal: 3441,
-	"Østre Toten": 3442,
-	"Vestre Toten": 3443,
-	Gran: 3446,
-	"Søndre Land": 3447,
-	"Nordre Land": 3448,
-	"Sør-Aurdal": 3449,
-	Etnedal: 3450,
-	"Nord-Aurdal": 3451,
-	"Vestre Slidre": 3452,
-	"Øystre Slidre": 3453,
-	Vang: 3454,
-	Horten: 3801,
-	Holmestrand: 3802,
-	Tønsberg: 3803,
-	Sandefjord: 3804,
-	Larvik: 3805,
-	Porsgrunn: 3806,
-	Skien: 3807,
-	Notodden: 3808,
-	Færder: 3811,
-	Siljan: 3812,
-	Bamble: 3813,
-	Kragerø: 3814,
-	Drangedal: 3815,
-	Nome: 3816,
-	"Midt-Telemark": 3817,
-	Tinn: 3818,
-	Hjartdal: 3819,
-	Seljord: 3820,
-	Kviteseid: 3821,
-	Nissedal: 3822,
-	Fyresdal: 3823,
-	Tokke: 3824,
-	Vinje: 3825,
-	Risør: 4201,
-	Grimstad: 4202,
-	Arendal: 4203,
-	Kristiansand: 4204,
-	Lindesnes: 4205,
-	Farsund: 4206,
-	Flekkefjord: 4207,
-	Gjerstad: 4211,
-	Vegårshei: 4212,
-	Tvedestrand: 4213,
-	Froland: 4214,
-	Lillesand: 4215,
-	Birkenes: 4216,
-	Åmli: 4217,
-	Iveland: 4218,
-	"Evje og Hornnes": 4219,
-	Bygland: 4220,
-	Valle: 4221,
-	Bykle: 4222,
-	Vennesla: 4223,
-	Åseral: 4224,
-	Lyngdal: 4225,
-	Hægebostad: 4226,
-	Kvinesdal: 4227,
-	Sirdal: 4228,
-	Bergen: 4601,
-	Kinn: 4602,
-	Etne: 4611,
-	Sveio: 4612,
-	Bømlo: 4613,
-	Stord: 4614,
-	Fitjar: 4615,
-	Tysnes: 4616,
-	Kvinnherad: 4617,
-	Ullensvang: 4618,
-	Eidfjord: 4619,
-	Ulvik: 4620,
-	Voss: 4621,
-	Kvam: 4622,
-	Samnanger: 4623,
-	Bjørnafjorden: 4624,
-	Austevoll: 4625,
-	Øygarden: 4626,
-	Askøy: 4627,
-	Vaksdal: 4628,
-	Modalen: 4629,
-	Osterøy: 4630,
-	Alver: 4631,
-	Austrheim: 4632,
-	Fedje: 4633,
-	Masfjorden: 4634,
-	Gulen: 4635,
-	Solund: 4636,
-	Hyllestad: 4637,
-	Høyanger: 4638,
-	Vik: 4639,
-	Sogndal: 4640,
-	Aurland: 4641,
-	Lærdal: 4642,
-	Årdal: 4643,
-	Luster: 4644,
-	Askvoll: 4645,
-	Fjaler: 4646,
-	Sunnfjord: 4647,
-	Bremanger: 4648,
-	Stad: 4649,
-	Gloppen: 4650,
-	Stryn: 4651,
-	Trondheim: 5001,
-	Steinkjer: 5006,
-	Namsos: 5007,
-	Frøya: 5014,
-	Osen: 5020,
-	Oppdal: 5021,
-	Rennebu: 5022,
-	Røros: 5025,
-	Holtålen: 5026,
-	"Midtre Gauldal": 5027,
-	Melhus: 5028,
-	Skaun: 5029,
-	Malvik: 5031,
-	Selbu: 5032,
-	Tydal: 5033,
-	Meråker: 5034,
-	Stjørdal: 5035,
-	Frosta: 5036,
-	Levanger: 5037,
-	Verdal: 5038,
-	"Snåase-Snåsa": 5041,
-	Lierne: 5042,
-	"Raarvihke - Røyrvik": 5043,
-	Namsskogan: 5044,
-	Grong: 5045,
-	Høylandet: 5046,
-	Overhalla: 5047,
-	Flatanger: 5049,
-	Leka: 5052,
-	Inderøy: 5053,
-	"Indre Fosen": 5054,
-	Heim: 5055,
-	Hitra: 5056,
-	Ørland: 5057,
-	Åfjord: 5058,
-	Orkland: 5059,
-	Nærøysund: 5060,
-	Rindal: 5061,
-	Tromsø: 5401,
-	"Harstad - Hárstták": 5402,
-	Alta: 5403,
-	Vardø: 5404,
-	Vadsø: 5405,
-	Hammerfest: 5406,
-	Kvæfjord: 5411,
-	Tjeldsund: 5412,
-	Ibestad: 5413,
-	Gratangen: 5414,
-	"Loabák - Lavangen": 5415,
-	Bardu: 5416,
-	Salangen: 5417,
-	Målselv: 5418,
-	Sørreisa: 5419,
-	Dyrøy: 5420,
-	Senja: 5421,
-	Balsfjord: 5422,
-	Karlsøy: 5423,
-	Lyngen: 5424,
-	"Storfjord-Omasvuotna-Omasvuono": 5425,
-	"Gáivuotna-Kåfjord-Kaivuono": 5426,
-	Skjervøy: 5427,
-	Nordreisa: 5428,
-	Kvænangen: 5429,
-	"Guovdageaidnu-Kautokeino": 5430,
-	Loppa: 5432,
-	Hasvik: 5433,
-	Måsøy: 5434,
-	Nordkapp: 5435,
-	"Porsanger-Porsáŋgu-Porsanki ": 5436,
-	"Kárášjohka-Karasjok": 5437,
-	Lebesby: 5438,
-	Gamvik: 5439,
-	Berlevåg: 5440,
-	"Deatnu-Tana": 5441,
-	"Unjárga-Nesseby": 5442,
-	Båtsfjord: 5443,
-	"Sør-Varanger": 5444,
+export const kommuneNavnOgNummer: Kommuner = {
+	alstahaug: "1820",
+	alta: "5601",
+	alvdal: "3428",
+	alver: "4631",
+	andøy: "1871",
+	aremark: "3124",
+	arendal: "4203",
+	asker: "3203",
+	askvoll: "4645",
+	askøy: "4627",
+	aukra: "1547",
+	aure: "1576",
+	aurland: "4641",
+	"aurskog-høland": "3226",
+	austevoll: "4625",
+	austrheim: "4632",
+	averøy: "1554",
+	balsfjord: "5532",
+	bamble: "4012",
+	bardu: "5520",
+	beiarn: "1839",
+	bergen: "4601",
+	berlevåg: "5630",
+	bindal: "1811",
+	birkenes: "4216",
+	bjerkreim: "1114",
+	bjørnafjorden: "4624",
+	bodø: "1804",
+	bokn: "1145",
+	bremanger: "4648",
+	brønnøy: "1813",
+	bygland: "4220",
+	bykle: "4222",
+	båtsfjord: "5632",
+	bærum: "3201",
+	bø: "1867",
+	bømlo: "4613",
+	dovre: "3431",
+	drammen: "3301",
+	drangedal: "4016",
+	dyrøy: "5528",
+	dønna: "1827",
+	eidfjord: "4619",
+	eidskog: "3416",
+	eidsvoll: "3240",
+	eigersund: "1101",
+	elverum: "3420",
+	enebakk: "3220",
+	engerdal: "3425",
+	etne: "4611",
+	etnedal: "3450",
+	evenes: "1853",
+	"evje og hornnes": "4219",
+	farsund: "4206",
+	fauske: "1841",
+	fedje: "4633",
+	fitjar: "4615",
+	fjaler: "4646",
+	fjord: "1578",
+	flakstad: "1859",
+	flatanger: "5049",
+	flekkefjord: "4207",
+	flesberg: "3334",
+	flå: "3320",
+	folldal: "3429",
+	fredrikstad: "3107",
+	frogn: "3214",
+	froland: "4214",
+	frosta: "5036",
+	frøya: "5014",
+	fyresdal: "4032",
+	færder: "3911",
+	gamvik: "5626",
+	gausdal: "3441",
+	gildeskål: "1838",
+	giske: "1532",
+	gjemnes: "1557",
+	gjerdrum: "3230",
+	gjerstad: "4211",
+	gjesdal: "1122",
+	gjøvik: "3407",
+	gloppen: "4650",
+	gol: "3324",
+	gran: "3446",
+	grane: "1825",
+	gratangens: "5516",
+	grimstad: "4202",
+	grong: "5045",
+	grue: "3417",
+	gulen: "4635",
+	gáivuotna: "5540",
+	hadsel: "1866",
+	halden: "3101",
+	hamar: "3403",
+	hamarøy: "1875",
+	hammerfest: "5603",
+	haram: "1580",
+	hareid: "1517",
+	harstad: "5503",
+	hasvik: "5616",
+	hattfjelldal: "1826",
+	haugesund: "1106",
+	heim: "5055",
+	hemnes: "1832",
+	hemsedal: "3326",
+	"herøy møre og romsdal": "1515",
+	"herøy nordland": "1818",
+	hitra: "5056",
+	hjartdal: "4024",
+	hjelmeland: "1133",
+	hol: "3330",
+	hole: "3310",
+	holmestrand: "3903",
+	holtålen: "5026",
+	horten: "3901",
+	hurdal: "3242",
+	hustadvika: "1579",
+	hvaler: "3110",
+	hyllestad: "4637",
+	hå: "1119",
+	hægebostad: "4226",
+	høyanger: "4638",
+	høylandet: "5046",
+	ibestad: "5514",
+	inderøy: "5053",
+	"indre fosen": "5054",
+	"indre østfold": "3118",
+	iveland: "4218",
+	jevnaker: "3236",
+	karasjok: "5610",
+	karlsøy: "5534",
+	karmøy: "1149",
+	kautokeino: "5612",
+	kinn: "4602",
+	klepp: "1120",
+	kongsberg: "3303",
+	kongsvinger: "3401",
+	kragerø: "4014",
+	kristiansand: "4204",
+	kristsund: "1505",
+	krødsherad: "3318",
+	kvam: "4622",
+	kvinesdal: "4227",
+	kvinnherad: "4617",
+	kviteseid: "4028",
+	kvitsøy: "1144",
+	kvæfjord: "5510",
+	kvænangen: "5546",
+	kåfjord: "5426",
+	larvik: "3909",
+	lavangen: "5518",
+	lebesby: "5624",
+	leirfjord: "1822",
+	leka: "5052",
+	lesja: "3432",
+	levanger: "5037",
+	lier: "3312",
+	lierne: "5042",
+	lillehammer: "3405",
+	lillesand: "4215",
+	lillestrøm: "3205",
+	lindesnes: "4205",
+	lom: "3434",
+	loppa: "5614",
+	lund: "1112",
+	lunner: "3234",
+	lurøy: "1834",
+	luster: "4644",
+	lyngdal: "4225",
+	lyngen: "5536",
+	lærdal: "4642",
+	lødingen: "1851",
+	lørenskog: "3222",
+	løten: "3412",
+	malvik: "5031",
+	marker: "3122",
+	masfjorden: "4634",
+	melhus: "5028",
+	meløy: "1837",
+	meråker: "5034",
+	"midt-telemark": "4020",
+	"midtre gauldal": "5027",
+	modal: "4629",
+	modum: "3316",
+	molde: "1506",
+	moskenes: "1874",
+	moss: "3103",
+	målselv: "5524",
+	måsøy: "5618",
+	namsos: "5007",
+	namsskogan: "5044",
+	nannestad: "3238",
+	narvik: "1806",
+	nes: "3228",
+	nesbyen: "3322",
+	nesna: "1828",
+	nesodden: "3212",
+	nesseby: "5636",
+	nissedal: "4030",
+	nittedal: "3232",
+	nome: "4018",
+	"nord-aurdal": "3451",
+	"nord-fron": "3436",
+	"nord-odal": "3414",
+	nordkapp: "5620",
+	"nordre follo": "3207",
+	"nordre land": "3448",
+	nordreisa: "5544",
+	"nore og uvdal": "3338",
+	notodden: "4005",
+	nærøysund: "5060",
+	oppdal: "5021",
+	orkland: "5059",
+	os: "3430",
+	osen: "5020",
+	oslo: "0301",
+	osterøy: "4630",
+	overhalla: "5047",
+	porsanger: "5622",
+	porsgrunn: "4001",
+	rakkestad: "3120",
+	rana: "1833",
+	randaberg: "1127",
+	rauma: "1539",
+	rendalen: "3424",
+	rennebu: "5022",
+	rindal: "5035",
+	ringebu: "3430",
+	ringsaker: "3444",
+	ringerike: "3314",
+	risør: "4209",
+	råde: "3108",
+	rømskog: "3123",
+	røros: "3427",
+	røyrvik: "5051",
+	salangen: "5526",
+	saltdal: "1835",
+	samnanger: "4623",
+	sandefjord: "3907",
+	sandnes: "1104",
+	sarpsborg: "3102",
+	sogne: "4640",
+	sola: "1126",
+	solund: "4616",
+	sortland: "1863",
+	stange: "3418",
+	stavanger: "1103",
+	steinkjer: "5038",
+	steigen: "1855",
+	stord: "4614",
+	storfjord: "1585",
+	stokke: "3915",
+	stordal: "1582",
+	"stor-elvdal": "3423",
+	stranda: "1587",
+	stryn: "4651",
+	suldal: "1137",
+	sund: "4620",
+	sundfjord: "5533",
+	"sør-aurdal": "3452",
+	"sør-fron": "3435",
+	"sør-varanger": "5634",
+	"sør-odal": "3415",
+	sørlandets: "4212",
+	tana: "5629",
+	time: "1123",
+	tokke: "4031",
+	torsken: "5613",
+	trondheim: "5001",
+	tromsø: "5401",
+	tønsberg: "3905",
+	ullensaker: "3224",
+	ulstein: "1518",
+	utsira: "4610",
+	vadsø: "5623",
+	vaksdal: "4628",
+	valle: "4217",
+	vang: "3440",
+	vanylven: "1586",
+	vardo: "5615",
+	varhaug: "1124",
+	vestby: "3204",
+	vestnes: "1584",
+	vestvågøy: "1857",
+	"vestre slidre": "3337",
+	volda: "1589",
+	våler: "3121",
+	vågsøy: "1588",
+	øksnes: "1861",
+	ørland: "5061",
+	ørsta: "1583",
+	"østre toten": "3445",
+	øyer: "3410",
+	øygarden: "4626",
+	"øvre eiker": "3302",
+	ørskog: "1581",
+	ålesund: "1504",
+	åmot: "3433",
+	ås: "3202",
+	åsnes: "3411",
+	åseral: "4223",
 };
-
-const newListRaw = `
-0301	Oslo
-1101	Eigersund
-1103	Stavanger
-1106	Haugesund
-1108	Sandnes
-1111	Sokndal
-1112	Lund
-1114	Bjerkreim
-1119	Hå
-1120	Klepp
-1121	Time
-1122	Gjesdal
-1124	Sola
-1127	Randaberg
-1130	Strand
-1133	Hjelmeland
-1134	Suldal
-1135	Sauda
-1144	Kvitsøy
-1145	Bokn
-1146	Tysvær
-1149	Karmøy
-1151	Utsira
-1160	Vindafjord
-1505	Kristiansund
-1506	Molde
-1508	Ålesund
-1511	Vanylven
-1514	Sande
-1515	Herøy (Møre og Romsdal)
-1516	Ulstein
-1517	Hareid
-1520	Ørsta
-1525	Stranda
-1528	Sykkylven
-1531	Sula
-1532	Giske
-1535	Vestnes
-1539	Rauma
-1547	Aukra
-1554	Averøy
-1557	Gjemnes
-1560	Tingvoll
-1563	Sunndal
-1566	Surnadal
-1573	Smøla
-1576	Aure
-1577	Volda
-1578	Fjord
-1579	Hustadvika
-1580	Haram
-1804	Bodø
-1806	Narvik
-1811	Bindal
-1812	Sømna
-1813	Brønnøy
-1815	Vega
-1816	Vevelstad
-1818	Herøy (Nordland)
-1820	Alstahaug
-1822	Leirfjord
-1824	Vefsn
-1825	Grane
-1826	Hattfjelldal
-1827	Dønna
-1828	Nesna
-1832	Hemnes
-1833	Rana
-1834	Lurøy
-1835	Træna
-1836	Rødøy
-1837	Meløy
-1838	Gildeskål
-1839	Beiarn
-1840	Saltdal
-1841	Fauske - Fuosko
-1845	Sørfold
-1848	Steigen
-1851	Lødingen
-1853	Evenes
-1856	Røst
-1857	Værøy
-1859	Flakstad
-1860	Vestvågøy
-1865	Vågan
-1866	Hadsel
-1867	Bø
-1868	Øksnes
-1870	Sortland - Suortá
-1871	Andøy
-1874	Moskenes
-1875	Hamarøy
-3101	Halden
-3103	Moss
-3105	Sarpsborg
-3107	Fredrikstad
-3110	Hvaler
-3112	Råde
-3114	Våler
-3116	Skiptvet
-3118	Indre Østfold
-3120	Rakkestad
-3122	Marker
-3124	Aremark
-3201	Bærum
-3203	Asker
-3205	Lillestrøm
-3207	Nordre Follo
-3209	Ullensaker
-3212	Nesodden
-3214	Frogn
-3216	Vestby
-3218	Ås
-3220	Enebakk
-3222	Lørenskog
-3224	Rælingen
-3226	Aurskog-Høland
-3228	Nes
-3230	Gjerdrum
-3232	Nittedal
-3234	Lunner
-3236	Jevnaker
-3238	Nannestad
-3240	Eidsvoll
-3242	Hurdal
-3301	Drammen
-3303	Kongsberg
-3305	Ringerike
-3310	Hole
-3312	Lier
-3314	Øvre Eiker
-3316	Modum
-3318	Krødsherad
-3320	Flå
-3322	Nesbyen
-3324	Gol
-3326	Hemsedal
-3328	Ål
-3330	Hol
-3332	Sigdal
-3334	Flesberg
-3336	Rollag
-3338	Nore og Uvdal
-3401	Kongsvinger
-3403	Hamar
-3405	Lillehammer
-3407	Gjøvik
-3411	Ringsaker
-3412	Løten
-3413	Stange
-3414	Nord-Odal
-3415	Sør-Odal
-3416	Eidskog
-3417	Grue
-3418	Åsnes
-3419	Våler (Innlandet)
-3420	Elverum
-3421	Trysil
-3422	Åmot
-3423	Stor-Elvdal
-3424	Rendalen
-3425	Engerdal
-3426	Tolga
-3427	Tynset
-3428	Alvdal
-3429	Folldal
-3430	Os
-3431	Dovre
-3432	Lesja
-3433	Skjåk
-3434	Lom
-3435	Vågå
-3436	Nord-Fron
-3437	Sel
-3438	Sør-Fron
-3439	Ringebu
-3440	Øyer
-3441	Gausdal
-3442	Østre Toten
-3443	Vestre Toten
-3446	Gran
-3447	Søndre Land
-3448	Nordre Land
-3449	Sør-Aurdal
-3450	Etnedal
-3451	Nord-Aurdal
-3452	Vestre Slidre
-3453	Øystre Slidre
-3454	Vang
-3901	Horten
-3903	Holmestrand
-3905	Tønsberg
-3907	Sandefjord
-3909	Larvik
-3911	Færder
-4001	Porsgrunn
-4003	Skien
-4005	Notodden
-4010	Siljan
-4012	Bamble
-4014	Kragerø
-4016	Drangedal
-4018	Nome
-4020	Midt-Telemark
-4022	Seljord
-4024	Hjartdal
-4026	Tinn
-4028	Kviteseid
-4030	Nissedal
-4032	Fyresdal
-4034	Tokke
-4036	Vinje
-4201	Risør
-4202	Grimstad
-4203	Arendal
-4204	Kristiansand
-4205	Lindesnes
-4206	Farsund
-4207	Flekkefjord
-4211	Gjerstad
-4212	Vegårshei
-4213	Tvedestrand
-4214	Froland
-4215	Lillesand
-4216	Birkenes
-4217	Åmli
-4218	Iveland
-4219	Evje og Hornnes
-4220	Bygland
-4221	Valle
-4222	Bykle
-4223	Vennesla
-4224	Åseral
-4225	Lyngdal
-4226	Hægebostad
-4227	Kvinesdal
-4228	Sirdal
-4601	Bergen
-4602	Kinn
-4611	Etne
-4612	Sveio
-4613	Bømlo
-4614	Stord
-4615	Fitjar
-4616	Tysnes
-4617	Kvinnherad
-4618	Ullensvang
-4619	Eidfjord
-4620	Ulvik
-4621	Voss
-4622	Kvam
-4623	Samnanger
-4624	Bjørnafjorden
-4625	Austevoll
-4626	Øygarden
-4627	Askøy
-4628	Vaksdal
-4629	Modalen
-4630	Osterøy
-4631	Alver
-4632	Austrheim
-4633	Fedje
-4634	Masfjorden
-4635	Gulen
-4636	Solund
-4637	Hyllestad
-4638	Høyanger
-4639	Vik
-4640	Sogndal
-4641	Aurland
-4642	Lærdal
-4643	Årdal
-4644	Luster
-4645	Askvoll
-4646	Fjaler
-4647	Sunnfjord
-4648	Bremanger
-4649	Stad
-4650	Gloppen
-4651	Stryn
-5001	Trondheim
-5006	Steinkjer
-5007	Namsos
-5014	Frøya
-5020	Osen
-5021	Oppdal
-5022	Rennebu
-5025	Røros
-5026	Holtålen
-5027	Midtre Gauldal
-5028	Melhus
-5029	Skaun
-5031	Malvik
-5032	Selbu
-5033	Tydal
-5034	Meråker
-5035	Stjørdal
-5036	Frosta
-5037	Levanger
-5038	Verdal
-5041	Snåase - Snåsa
-5042	Lierne
-5043	Raarvihke - Røyrvik
-5044	Namsskogan
-5045	Grong
-5046	Høylandet
-5047	Overhalla
-5049	Flatanger
-5052	Leka
-5053	Inderøy
-5054	Indre Fosen
-5055	Heim
-5056	Hitra
-5057	Ørland
-5058	Åfjord
-5059	Orkland
-5060	Nærøysund
-5061	Rindal
-5501	Tromsø
-5503	Harstad
-5510	Kvæfjord
-5512	Tjeldsund
-5514	Ibestad
-5516	Gratangen
-5518	Loabák - Lavangen
-5520	Bardu
-5522	Salangen
-5524	Målselv
-5526	Sørreisa
-5528	Dyrøy
-5530	Senja
-5532	Balsfjord
-5534	Karlsøy
-5536	Lyngen
-5538	Storfjord - Omasvuotna - Omasvuono
-5540	Gáivuotna - Kåfjord - Kaivuono
-5542	Skjervøy
-5544	Nordreisa
-5546	Kvænangen
-5601	Alta
-5603	Hammerfest
-5605	Sør-Varanger
-5607	Vadsø
-5610	Kárásjohka - Karasjok
-5612	Guovdageaidnu - Kautokeino
-5614	Loppa
-5616	Hasvik
-5618	Måsøy
-5620	Nordkapp
-5622	Porsanger - Porsángu - Porsanki 
-5624	Lebesby
-5626	Gamvik
-5628	Deatnu-Tana
-5630	Berlevåg
-5632	Båtsfjord
-5634	Vardø
-5636	Unjárga-Nesseby`;
-
-updateNumbersCode(newListRaw);
