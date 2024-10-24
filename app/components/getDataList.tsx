@@ -9,7 +9,6 @@ import normalizeStringInput from "@/app/utilities/normalizeStringInput"; // stri
 
 import DataTable from "./DataTable";
 import { PaginationContainer } from "./PaginationContainer";
-import { Button } from "../UI/Button";
 
 import { kommuneNavnOgNummer } from "../data/kommuner";
 import { BedriftResponse } from "../types/bedrifterType";
@@ -26,7 +25,7 @@ export default function DataFetching() {
 	const [error, setError] = useState<Error | null>(null);
 	const abortControllerRef = useRef<AbortController | null>(null); // Referanse til AbortController for å håndtere race conditions ved fetch-forespørselen
 
-	const { currentPage, goToNextPage, goToPreviousPage } = usePagination({
+	const { currentPage, goToNextPage, goToPreviousPage, reset } = usePagination({
 		totalPages,
 		initialPage: 0,
 	});
@@ -71,6 +70,11 @@ export default function DataFetching() {
 
 		fetchBedrifter();
 	}, [form, currentPage]);
+
+	useEffect(() => {
+		// rester page til 0 når form blir sumbited på nytt, sånn at page ikke persister igjennom ny form search.
+		reset();
+	}, [form]);
 
 	if (isLoading) {
 		return <div>Loading...</div>;
