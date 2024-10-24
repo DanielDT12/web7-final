@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 
 type PaginationPros = {
 	totalPages: number;
@@ -11,17 +11,17 @@ export const usePagination = ({
 }: PaginationPros) => {
 	const [currentPage, setCurrentPage] = useState<number>(0);
 
-	const goToPreviousPage = () => {
+	const goToPreviousPage = useCallback(() => {
 		setCurrentPage((prevPage) => Math.max(prevPage - 1, 0));
-	};
+	}, []);
 
-	const goToNextPage = () => {
+	const goToNextPage = useCallback(() => {
 		setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages - 1));
-	};
+	}, [totalPages]);
 
-	const reset = () => {
+	const reset = useCallback(() => {
 		setCurrentPage(0);
-	};
+	}, []);
 
 	return { currentPage, goToNextPage, goToPreviousPage, reset };
 };
