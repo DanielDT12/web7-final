@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import { useDebounce } from "../hooks/useDebounce";
 import { useFormState } from "../hooks/useFormState";
 
@@ -10,7 +10,7 @@ import capitalizeName from "@/app/utilities/capitalizeKommuneName";
 
 import { Button } from "../UI/Button";
 
-type KommuneArray = [string, number];
+type KommuneArray = [string, string];
 
 export const SearchForm = () => {
 	const [kommuner, setKommuner] = useState<KommuneArray[]>([]); // array for ul liste, conditional rendering nederst i tsx.
@@ -22,10 +22,13 @@ export const SearchForm = () => {
 	useEffect(() => {
 		// useEffect for filtrering av liste, Object.entries lagger ett array av kommuneNavnOgNummer objectet.
 		if (!isSelected && debouncedKommune) {
-			const filterKommune: any = Object.entries(kommuneNavnOgNummer).filter(
-				([name]) => name.toLowerCase().includes(debouncedKommune.toLowerCase())
+			const filterKommune: KommuneArray[] = Object.entries(
+				kommuneNavnOgNummer
+			).filter(([name]) =>
+				name.toLowerCase().includes(debouncedKommune.toLowerCase())
 			);
 			setKommuner(filterKommune);
+			console.log(filterKommune);
 		} else {
 			setKommuner([]);
 		}
@@ -110,7 +113,7 @@ export const SearchForm = () => {
 								key={name + number}
 								onClick={() => handleSelectedKommune(name)}
 								onKeyDown={(e) => onEnterKeyPressConfirm({ e, name })}
-								tabIndex={0}
+								tabIndex={0} // lar bruker tabbe igjennom liste.
 							>
 								{capitalizeName(name)}
 							</li>
