@@ -69,12 +69,12 @@ export default function DataFetching() {
 		};
 
 		fetchBedrifter();
-	}, [form, currentPage]);
+	}, [form, currentPage, kommuneNummer, setBedrifter]);
 
 	useEffect(() => {
 		// rester page til 0 når form blir sumbited på nytt, sånn at page ikke persister igjennom ny form search.
 		reset();
-	}, [form]);
+	}, [form, reset]);
 
 	if (isLoading) {
 		return <div>Loading...</div>;
