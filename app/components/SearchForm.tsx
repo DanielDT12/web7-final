@@ -72,6 +72,20 @@ export const SearchForm = () => {
 		setKommuner([]); // redundancy når man submitter form, gjør det samme som den over.
 	};
 
+	interface EnterKeyPressFunctionType {
+		e: React.KeyboardEvent;
+		name: string;
+	}
+
+	const onEnterKeyPressConfirm = ({
+		e,
+		name,
+	}: EnterKeyPressFunctionType): void => {
+		if (e.key === "Enter") {
+			handleSelectedKommune(name);
+		}
+	};
+
 	return (
 		<>
 			<form
@@ -86,6 +100,23 @@ export const SearchForm = () => {
 					onChange={handleKommuneChange}
 					placeholder="Søk etter kommune"
 				/>
+				{inputValue.kommune && kommuner.length > 0 && (
+					<ul className="absolute top-44 left-0 flex flex-col max-h-[40rem] w-[100%] max-w-[14rem] my-4 border border-solid border-white bg-black overflow-y-scroll sm:top-12">
+						{kommuner.sort().map(([name, number]) => (
+							<li
+								className={`p-2 cursor-pointer ${
+									kommuner.length > 1 ? "border-t border-b" : ""
+								} border-white`}
+								key={name + number}
+								onClick={() => handleSelectedKommune(name)}
+								onKeyDown={(e) => onEnterKeyPressConfirm({ e, name })}
+								tabIndex={0}
+							>
+								{capitalizeName(name)}
+							</li>
+						))}
+					</ul>
+				)}
 				<input
 					className="p-2 rounded-md text-black w-[100%]"
 					type="text"
@@ -97,21 +128,6 @@ export const SearchForm = () => {
 				<Button type="submit" fontSize="xl">
 					Submit
 				</Button>
-				{inputValue.kommune && kommuner.length > 0 && (
-					<ul className="absolute top-44 left-0 flex flex-col max-h-[40rem] w-[100%] max-w-[14rem] my-4 border border-solid border-white bg-black overflow-y-scroll sm:top-12">
-						{kommuner.sort().map(([name, number]) => (
-							<li
-								className={`p-2 cursor-pointer ${
-									kommuner.length > 1 ? "border-t border-b" : ""
-								} border-white`}
-								key={name + number}
-								onClick={() => handleSelectedKommune(name)}
-							>
-								{capitalizeName(name)}
-							</li>
-						))}
-					</ul>
-				)}
 			</form>
 		</>
 	);
