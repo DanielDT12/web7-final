@@ -1,3 +1,4 @@
+import { ArrowLeft, ArrowRight, X } from "lucide-react";
 import { Button } from "../UI/Button";
 
 type PaginationFunctionType = {
@@ -20,10 +21,10 @@ export const PaginationContainer = ({
 	return (
 		<div className="flex justify-between max-w-[65rem] py-8">
 			<Button onClick={goToPreviousPage} disabled={currentPage === 0}>
-				&larr;
+				{currentPage === 0 ? <X /> : <ArrowLeft />}
 			</Button>
 			<Button onClick={goToNextPage} disabled={currentPage === totalPages - 1}>
-				&rarr;
+				{currentPage === totalPages - 1 ? <X /> : <ArrowRight />}
 			</Button>
 		</div>
 	);
