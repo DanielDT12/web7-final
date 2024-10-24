@@ -20,8 +20,8 @@ export const usePagination = ({
 	}, [totalPages]);
 
 	const reset = useCallback(() => {
-		setCurrentPage(0);
-	}, []);
+		setCurrentPage(initialPage);
+	}, [initialPage]);
 
 	return { currentPage, goToNextPage, goToPreviousPage, reset };
 };
