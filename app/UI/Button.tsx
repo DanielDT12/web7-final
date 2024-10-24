@@ -51,7 +51,7 @@ export const Button: FC<ButtonProps> = ({
 
 	return (
 		<button
-			className={`border border-solid border-white px-[1em] py-[.5em] rounded-xl ${fontSizeClass} ${className}`}
+			className={`border border-solid border-white px-[1em] py-[.5em] rounded-xl hover:bg-gray-800 ${fontSizeClass} ${className}`}
 			{...props}
 		>
 			{children}
