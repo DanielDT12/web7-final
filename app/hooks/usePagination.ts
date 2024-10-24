@@ -19,5 +19,9 @@ export const usePagination = ({
 		setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages - 1));
 	};
 
-	return { currentPage, goToNextPage, goToPreviousPage };
+	const reset = () => {
+		setCurrentPage(0);
+	};
+
+	return { currentPage, goToNextPage, goToPreviousPage, reset };
 };
